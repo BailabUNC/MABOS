@@ -1,7 +1,7 @@
 {
     "Header": {
         "Comment": "All values are metric (mm)",
-        "CreationDate": "2023-05-08T14:54:36Z",
+        "CreationDate": "2023-05-09T15:28:57Z",
         "GenerationSoftware": {
             "Application": "Fusion 360 Electronics",
             "Vendor": "Autodesk",
@@ -17,8 +17,8 @@
         },
         "Owner": "Arjun Putcha <arjun22@live.unc.edu>",
         "Size": {
-            "X": 38.08,
-            "Y": 28.88
+            "X": 39.35,
+            "Y": 33.96
         }
     }
 }
