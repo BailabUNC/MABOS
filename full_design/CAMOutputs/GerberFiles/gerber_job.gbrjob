@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2023-06-01T14:54:37Z",
+        "GenerationSoftware": {
+            "Application": "Fusion 360 Electronics",
+            "Vendor": "Autodesk",
+            "Version": "9.7.0"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.57,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "3_Channel_MABOS v3"
+        },
+        "Owner": "Arjun Putcha <arjun22@live.unc.edu>",
+        "Size": {
+            "X": 21.664,
+            "Y": 39.936928
+        }
+    }
+}
