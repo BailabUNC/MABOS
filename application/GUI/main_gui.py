@@ -5,20 +5,8 @@ import numpy as np
 import time
 import matplotlib
 from utils import *
-matplotlib.use('Qt5Agg')
 import os
 import serial
-
-
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
-
-# class MplCanvas(FigureCanvasQTAgg):
-#
-#     def __init__(self, parent=None, width=5, height=4, dpi=100):
-#         fig = Figure(figsize=(width, height), dpi=dpi)
-#         self.axes = fig.add_subplot(111)
-#         super(MplCanvas, self).__init__(fig)
 
 class main_gui(Ui_MainWindow):
     def __init__(self, window):
@@ -64,6 +52,13 @@ class main_gui(Ui_MainWindow):
         ports = find_serial_ports()
         return ports
 
+    def update_plot(self):
+        # Drop off the first y element, append a new one.
+        self.ydata = self.ydata[1:] + [random.randint(0, 10)]
+        self.canvas.axes.cla()  # Clear the canvas.
+        self.canvas.axes.plot(self.xdata, self.ydata, 'r')
+        # Trigger the canvas to update and redraw.
+        self.canvas.draw()
 
     # TODO: identify available ports and let user choose
     # TODO: Create refresh button
