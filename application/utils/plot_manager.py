@@ -1,58 +1,59 @@
 import numpy as np
 import utils.data_manager as dm
 import utils.mem_manager as mm
+from multiprocessing.shared_memory import SharedMemory
 from fastplotlib import Plot, GridPlot
 
+def create_plot():
+    plot = Plot()
+    return plot
+def create_grid_plot():
+    grid_shape = (1, 3)
+    controllers = [
+        [0, 1, 2]
+    ]
+    names = [
+        ["red", "IR", "violet"]
+    ]
+    grid_plot = GridPlot(
+        shape=grid_shape,
+        controllers=controllers,
+        names=names
+    )
+    return grid_plot
+def initialize_plot():
+    plot = create_plot()
+    xs, ys = dm.initialize_plot_data()
+    plot_data = np.dstack([xs, ys])[0]
+    plot.add_line(data=plot_data, name='data', cmap='jet')
+    plot.auto_scale(maintain_aspect=False)
+    data = np.vstack((xs, ys))
+    return plot, data
+def initialize_grid_plot():
+    grid_plot = create_grid_plot()
+    xs, ys = dm.initialize_grid_plot_data()
+    for i, subplot in enumerate(grid_plot):
+        plot_data = np.dstack([xs, ys[i]])[0]
+        subplot.add_line(data=plot_data, name='data', cmap='jet')
+    data = np.vstack((xs, ys))
+    return grid_plot, data
 
-class PlotManager:
-    def __init__(self):
-        self.plot = None
-        self.grid_plot = None
+def obtain_plot_data(plot, mutex, shape, dtype, shm_name):
+    mm.acquire_mutex(mutex)
+    print('plot acquire')
+    shm = SharedMemory(shm_name)
+    data_shared = np.ndarray(shape=shape, dtype=dtype,
+                             buffer=shm.buf)
+    data = np.dstack([data_shared[0], data_shared[1]])[0]
+    mm.release_mutex(mutex)
+    print('plot release')
+    plot.data = data
 
-    def create_plot(self):
-        self.plot = Plot()
-        return self.plot
-    def create_grid_plot(self):
-        grid_shape = (1, 3)
-        controllers = [
-            [0, 1, 2]
-        ]
-        names = [
-            ["red", "IR", "violet"]
-        ]
-        self.grid_plot = GridPlot(
-            shape=grid_shape,
-            controllers=controllers,
-            names=names
-        )
-        return self.grid_plot
-    def initialize_plot(self):
-        xs, ys = dm.DataManager.initialize_plot_data()
-        plot_data = np.dstack([xs, ys])[0]
-        self.plot.add_line(data=plot_data, name='data', cmap='jet')
-        self.plot.auto_scale(maintain_aspect=False)
-        data = np.vstack((xs, ys))
-        return data
-    def initialize_grid_plot(self):
-        xs, ys, data = dm.DataManager.initialize_grid_plot_data()
-        for i, subplot in enumerate(self.grid_plot):
-            plot_data = np.dstack([xs, ys[i]])[0]
-            subplot.add_line(data = plot_data, name='data', cmap='jet')
-        data = np.vstack((xs, ys))
-        return data
 
-    def obtain_plot_data(self):
-        mm.MemoryManager.acquire_mutex()
-        data_shared = mm.MemoryManager.get_shm_data()
-        data = np.dstack([data_shared[0], data_shared[1]])[0]
-        mm.MemoryManager.release_mutex()
-        self.plot['data'].data = data
-        self.plot.auto_scale(maintain_aspect=False)
-
-    def obtain_grid_plot_data(self):
-        mm.MemoryManager.acquire_mutex()
-        data_shared = mm.MemoryManager.get_shm_data()
-        for i, subplot in enumerate(self.grid_plot):
-            data = np.dstack([data_shared[0], data_shared[i + 1]])[0]
-            subplot['data'].data = data
-        mm.MemoryManager.release_mutex()
+def obtain_grid_plot_data(grid_plot, mutex, shape, dtype, shm_name):
+    mm.acquire_mutex(mutex)
+    data_shared = mm.get_shm_data(shape, dtype, shm_name)
+    for i, subplot in enumerate(grid_plot):
+        data = np.dstack([data_shared[0], data_shared[i + 1]])[0]
+        subplot['data'].data = data
+    mm.release_mutex(mutex)
