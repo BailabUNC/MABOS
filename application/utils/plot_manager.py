@@ -4,9 +4,12 @@ import utils.mem_manager as mm
 from multiprocessing.shared_memory import SharedMemory
 from fastplotlib import Plot, GridPlot
 
+
 def create_plot():
     plot = Plot()
     return plot
+
+
 def create_grid_plot():
     grid_shape = (1, 3)
     controllers = [
@@ -21,6 +24,8 @@ def create_grid_plot():
         names=names
     )
     return grid_plot
+
+
 def initialize_plot():
     plot = create_plot()
     xs, ys = dm.initialize_plot_data()
@@ -29,6 +34,8 @@ def initialize_plot():
     plot.auto_scale(maintain_aspect=False)
     data = np.vstack((xs, ys))
     return plot, data
+
+
 def initialize_grid_plot():
     grid_plot = create_grid_plot()
     xs, ys = dm.initialize_grid_plot_data()
@@ -38,19 +45,19 @@ def initialize_grid_plot():
     data = np.vstack((xs, ys))
     return grid_plot, data
 
-def obtain_plot_data(plot, mutex, shape, dtype, shm_name):
+
+def obtain_plot_data(plot, mutex, shm_name, shape, dtype):
     mm.acquire_mutex(mutex)
-    print('plot acquire')
     shm = SharedMemory(shm_name)
     data_shared = np.ndarray(shape=shape, dtype=dtype,
                              buffer=shm.buf)
     data = np.dstack([data_shared[0], data_shared[1]])[0]
     mm.release_mutex(mutex)
-    print('plot release')
-    plot.data = data
+    plot['data'].data = data
+    plot.auto_scale(maintain_aspect=False)
 
 
-def obtain_grid_plot_data(grid_plot, mutex, shape, dtype, shm_name):
+def obtain_grid_plot_data(grid_plot, mutex, shm_name, shape, dtype):
     mm.acquire_mutex(mutex)
     data_shared = mm.get_shm_data(shape, dtype, shm_name)
     for i, subplot in enumerate(grid_plot):
