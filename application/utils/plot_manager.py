@@ -11,12 +11,16 @@ def create_plot():
 
 
 def create_grid_plot():
-    grid_shape = (1, 3)
+    grid_shape = (3, 1)
     controllers = [
-        [0, 1, 2]
+        [0],
+        [1],
+        [2]
     ]
     names = [
-        ["red", "IR", "violet"]
+        ["red channel"],
+        ["infrared channel"],
+        ["violet channel"]
     ]
     grid_plot = GridPlot(
         shape=grid_shape,
@@ -65,4 +69,5 @@ def obtain_grid_plot_data(grid_plot, mutex, shm_name, shape, dtype):
     for i, subplot in enumerate(grid_plot):
         data = np.dstack([data_shared[0], data_shared[i + 1]])[0]
         subplot['data'].data = data
+        subplot.auto_scale(maintain_aspect=False)
     mm.release_mutex(mutex)
