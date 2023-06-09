@@ -10,4 +10,10 @@ def setup_serial(commport, baudrate):
 
 
 def acquire_data(ser):
-    return ser.readline().decode().strip()
+    channel_data = [0, 0, 0, 0]
+    for i in range(4):
+        channel_data[i] = ser.readline().decode().strip()
+    if channel_data[3] != '/':
+        print('error in serial data')
+        return
+    return channel_data

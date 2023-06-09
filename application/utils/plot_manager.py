@@ -59,7 +59,9 @@ def obtain_plot_data(plot, mutex, shm_name, shape, dtype):
 
 def obtain_grid_plot_data(grid_plot, mutex, shm_name, shape, dtype):
     mm.acquire_mutex(mutex)
-    data_shared = mm.get_shm_data(shape, dtype, shm_name)
+    shm = SharedMemory(shm_name)
+    data_shared = np.ndarray(shape=shape, dtype=dtype,
+                             buffer=shm.buf)
     for i, subplot in enumerate(grid_plot):
         data = np.dstack([data_shared[0], data_shared[i + 1]])[0]
         subplot['data'].data = data

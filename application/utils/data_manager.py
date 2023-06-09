@@ -13,7 +13,8 @@ def initialize_plot_data():
 
 def initialize_grid_plot_data():
     xs = [np.linspace(0, 999, 1000)]
-    ys = np.array(np.random.randint(0, 1000, size=(3, 1000)))
+    ys = np.ones((3, 1000)) * np.linspace(0, 1, 1000)
+    # ys = np.array(np.random.randint(0, 1000, size=(3, 1000)))
     return xs, ys
 
 
@@ -30,6 +31,6 @@ def update_data(ser, shm_name, mutex, window_length, shape, dtype):
         data_shared[0][-window_length:] = xs
         for i in range(shape[0] - 1):
             data_shared[i + 1][:-window_length] = data_shared[i + 1][window_length:]
-            data_shared[i + 1][-window_length:] = ys
+            data_shared[i + 1][-window_length:] = ys[i]
 
         mm.release_mutex(mutex)
