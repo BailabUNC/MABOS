@@ -22,7 +22,9 @@ float raw;
 #define sampleSize 5    // number of samples for burst filter
 #define sampleRate 100 //in Hz
 #define window_size 10  // Number of samples for moving average filter
-int idx = 0;            // index of moving average filter to replace
+int red_idx = 0;       
+int ir_idx = 0;
+int violet_idx = 0;     // index of moving average filter to replace
 int burst_sum = 0;
 int burst_avg = 0;
 // variables for managing adc processing
@@ -69,7 +71,7 @@ void setup() {
 float burst_sample(int channel_flag) {
   for (int i=0; i<sampleSize; i++){
       burst_sum += readADC(channel_flag);
-      delay(1000/(2*sampleRate*sampleSize));
+      delay(1000/(6*sampleRate*sampleSize));
     }
   burst_avg = burst_sum/sampleSize;
   burst_sum = 0;
@@ -78,25 +80,27 @@ float burst_sample(int channel_flag) {
 
 float moving_average_filter(int channel_flag, int burst_val) {
   if (channel_flag == red) {
-    red_sum = red_sum - red_adc_arr[idx];
-    red_adc_arr[idx] = burst_val;
+    red_sum = red_sum - red_adc_arr[red_idx];
+    red_adc_arr[red_idx] = burst_val;
     red_sum += burst_val;
     red_avg = red_sum/window_size;
+    red_idx = (red_idx+1) % window_size;
     return red_avg;
   }
   else if (channel_flag == ir) {
-    ir_sum = ir_sum - ir_adc_arr[idx];
-    ir_adc_arr[idx] = burst_val;
+    ir_sum = ir_sum - ir_adc_arr[ir_idx];
+    ir_adc_arr[ir_idx] = burst_val;
     ir_sum += burst_val;
     ir_avg = ir_sum/window_size;
+    ir_idx = (ir_idx+1) % window_size;
     return ir_avg;
   }
   else {
-    violet_sum = violet_sum - violet_adc_arr[idx];
-    violet_adc_arr[idx] = burst_val;
+    violet_sum = violet_sum - violet_adc_arr[violet_idx];
+    violet_adc_arr[violet_idx] = burst_val;
     violet_sum += burst_val;
     violet_avg = violet_sum/window_size;
-    idx = (idx+1) % window_size;
+    violet_idx = (violet_idx+1) % window_size;
     return violet_avg;
   }
 }
@@ -125,6 +129,8 @@ void loop() {
     Serial.println(channel_data[violet]);
     Serial.println('/');
     Serial.flush();
+
+
 }
 
 
