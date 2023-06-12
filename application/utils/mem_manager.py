@@ -3,6 +3,7 @@ from multiprocessing.shared_memory import SharedMemory
 import utils.data_manager as dm
 import utils.plot_manager as pm
 import numpy as np
+from sqlitedict import SqliteDict
 
 
 def create_event_flags():
@@ -34,13 +35,41 @@ def create_shared_block(grid_plot_flag=False, dtype=np.int64):
     data_shared = np.ndarray(shape=data.shape,
                              dtype=dtype, buffer=shm.buf)
     data_shared[:] = data[:]
+    _save_channel(key="Red", value=[0])
+    _save_channel(key="IR", value=[0])
+    _save_channel(key="Violet", value=[0])
     return shm, data_shared, plot
 
 
 def get_shm_data(shape, dtype, shm_name):
-    print('request for shared data')
     shm = SharedMemory(shm_name)
     data_shared = np.ndarray(shape=shape, dtype=dtype,
                              buffer=shm.buf)
-    print(data_shared)
     return data_shared
+
+
+def _save_channel(key, value, cache_file="cache.sqlite3"):
+    try:
+        with SqliteDict(cache_file) as mydict:
+            mydict[key] = value  # Using dict[key] to store
+            mydict.commit()  # Need to commit() to actually flush the data
+    except Exception as ex:
+        print("Error during storing data (Possibly unsupported):", ex)
+
+
+def _load_channel(key, cache_file="cache.sqlite3"):
+    try:
+        with SqliteDict(cache_file) as mydict:
+            value = mydict[key]  # No need to use commit(), since we are only loading data!
+        return value
+    except Exception as ex:
+        print("Error during loading data:", ex)
+
+
+def save_data(key, value, cache_file="cache.sqlite3"):
+    try:
+        data = _load_channel(key, cache_file)
+        data.append(value)
+        _save_channel(key, data, cache_file)
+    except Exception as ex:
+        print("Error during saving data", ex)
