@@ -10,22 +10,18 @@ def create_plot():
     return plot
 
 
-def create_grid_plot():
-    grid_shape = (3, 1)
-    controllers = [
-        [0],
-        [1],
-        [2]
-    ]
-    names = [
-        ["red channel"],
-        ["infrared channel"],
-        ["violet channel"]
-    ]
+def create_grid_plot(num_channel):
+    grid_shape = (num_channel, 1)
+
+    # names = [
+    #     ["red channel"],
+    #     ["infrared channel"],
+    #     ["violet channel"]
+    # ]
     grid_plot = GridPlot(
-        shape=grid_shape,
-        controllers=controllers,
-        names=names
+        shape=grid_shape
+        # controllers=controllers,
+        # names=names
     )
     return grid_plot
 
@@ -40,9 +36,9 @@ def initialize_plot():
     return plot, data
 
 
-def initialize_grid_plot():
-    grid_plot = create_grid_plot()
-    xs, ys = dm.initialize_grid_plot_data()
+def initialize_grid_plot(num_channel):
+    grid_plot = create_grid_plot(num_channel)
+    xs, ys = dm.initialize_grid_plot_data(num_channel)
     for i, subplot in enumerate(grid_plot):
         plot_data = np.dstack([xs, ys[i]])[0]
         subplot.add_line(data=plot_data, name='data', cmap='jet')
