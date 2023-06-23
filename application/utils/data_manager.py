@@ -11,23 +11,24 @@ def initialize_plot_data():
     return xs, ys
 
 
-def initialize_grid_plot_data():
+def initialize_grid_plot_data(num_channel):
     xs = [np.linspace(0, 999, 1000)]
-    ys = np.ones((3, 1000)) * np.linspace(0, 1, 1000)
+    ys = np.ones((num_channel, 1000)) * np.linspace(0, 1, 1000)
     # ys = np.array(np.random.randint(0, 1000, size=(3, 1000)))
     return xs, ys
 
 
-def update_data(ser, shm_name, mutex, window_length, shape, dtype):
+def update_data(ser, shm_name, mutex, window_length, shape, dtype, channel_key):
     idx = 0
-    channel_key = ["Red", "IR", "Violet"]
+    if len(channel_key) != shape[0] - 1:
+        print("channel_key has incompatible number of channel labels")
+
     while True:
-        ys = sm.acquire_data(ser)
+        ys = sm.acquire_data(ser, num_channel=shape[0]-1)
         shm = SharedMemory(shm_name)
         mm.acquire_mutex(mutex)
         data_shared = np.ndarray(shape=shape, dtype=dtype,
                                  buffer=shm.buf)
-        # data_shared = mm.get_shm_data(shape, dtype, shm_name)
         xs = data_shared[0][-window_length:]
         data_shared[0][:-window_length] = data_shared[0][window_length:] - [window_length]
         data_shared[0][-window_length:] = xs

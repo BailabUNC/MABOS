@@ -25,9 +25,9 @@ def release_mutex(mutex):
     mutex.release()
 
 
-def create_shared_block(grid_plot_flag=False, dtype=np.int64):
+def create_shared_block(channel_key, grid_plot_flag=False, dtype=np.int64):
     if grid_plot_flag:
-        plot, data = pm.initialize_grid_plot()
+        plot, data = pm.initialize_grid_plot(num_channel=len(channel_key))
     else:
         plot, data = pm.initialize_plot()
 
@@ -35,9 +35,9 @@ def create_shared_block(grid_plot_flag=False, dtype=np.int64):
     data_shared = np.ndarray(shape=data.shape,
                              dtype=dtype, buffer=shm.buf)
     data_shared[:] = data[:]
-    _save_channel(key="Red", value=[0])
-    _save_channel(key="IR", value=[0])
-    _save_channel(key="Violet", value=[0])
+    for i in range(len(channel_key)):
+        _save_channel(key=channel_key[i], value=[0])
+
     return shm, data_shared, plot
 
 
