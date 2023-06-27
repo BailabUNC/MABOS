@@ -18,8 +18,15 @@ def initialize_grid_plot_data(num_channel):
     return xs, ys
 
 
-def update_data(ser, shm_name, mutex, window_length, shape, dtype, channel_key):
+def update_data(args_dict):
     idx = 0
+    ser = args_dict["ser"]
+    shm_name = args_dict["shm_name"]
+    mutex = args_dict["mutex"]
+    window_length = args_dict["window_length"]
+    shape = args_dict["shape"]
+    dtype = args_dict["dtype"]
+    channel_key = args_dict["channel_key"]
     while True:
         ys = sm.acquire_data(ser, num_channel=shape[0]-1)
         if ys is None:

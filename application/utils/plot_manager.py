@@ -53,7 +53,12 @@ def obtain_plot_data(plot, mutex, shm_name, shape, dtype):
     plot.auto_scale(maintain_aspect=False)
 
 
-def obtain_grid_plot_data(grid_plot, mutex, shm_name, shape, dtype):
+def obtain_grid_plot_data(args_dict):
+    grid_plot = args_dict["plot"]
+    mutex = args_dict["mutex"]
+    shm_name = args_dict["shm_name"]
+    shape = args_dict["shape"]
+    dtype = args_dict["dtype"]
     mm.acquire_mutex(mutex)
     shm = SharedMemory(shm_name)
     data_shared = np.ndarray(shape=shape, dtype=dtype,
