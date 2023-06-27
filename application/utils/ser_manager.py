@@ -17,7 +17,8 @@ def acquire_data(ser, num_channel):
             channel_data[i] = ser.readline().decode().strip()
         except:
             pass
-    if sum(channel_data) == 0:
-        return
-    else:
+
+    if np.all(channel_data):
         return channel_data
+    else:
+        return
