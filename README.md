@@ -1,7 +1,7 @@
 # MABOS
 *All work in the MABOS repository is under Copyright Protections enumerated in the LICENSE file. Please contact Arjun Putcha - arjun22@live.unc.edu - for any questions related to redistribution of this work*
 
-*Please see [fastplotlib](https://github.com/kushalkolar/fastplotlib/tree/master)] to learn more about the plotting library we primarily use.*
+*Please see [fastplotlib](https://github.com/kushalkolar/fastplotlib/tree/master), developed by Kushal Kolar, to learn more about the plotting library we primarily use.*
 
 There are three key folders in this repository: full_design, firmware, and application.
 
