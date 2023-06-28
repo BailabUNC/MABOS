@@ -158,7 +158,7 @@ set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|i
 set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|disable-rx" "False")
 set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|current-speed" "115200")
 set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|hw-flow-control" "False")
-set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|status" "disabled")
+set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|status" "okay")
 set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|compatible" "nordic,nrf-uarte;")
 set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|wakeup-source" "False")
 set_target_properties(devicetree_target PROPERTIES "DT_PROP|/soc/uart@40002000|zephyr,pm-device-runtime-auto" "False")

@@ -105,7 +105,7 @@
 			compatible = "nordic,nrf-uarte";
 			reg = < 0x40002000 0x1000 >;
 			interrupts = < 0x2 0x1 >;
-			status = "disabled";
+			status = "okay";
 			current-speed = < 0x1c200 >;
 			pinctrl-0 = < &uart0_default >;
 			pinctrl-1 = < &uart0_sleep >;
