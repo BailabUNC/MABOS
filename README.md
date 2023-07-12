@@ -3,6 +3,8 @@
 
 *Please see [fastplotlib](https://github.com/kushalkolar/fastplotlib/tree/master), developed by Kushal Kolar, to learn more about the plotting library we primarily use.*
 
+
+
 There are three key folders in this repository: full_design, firmware, and application.
 
 ## Full Design
@@ -25,3 +27,4 @@ Contains the source code, build files, and modified board files to use the adafr
 ## Application
 The *utils* folder contains the core API used to acquire, plot, and save biosensor data in real time. The *PPG Widget* python notebook utilizes the core API to operate our device. When running this script, a file named *cache.sqlite3* will be created that contains all acquired data. For our uses, we've found a minute of data acquisition corresponds to ~1 MB of data saved.
 The *GUI* folder contains a QT Desktop application used solely for displaying acquired biometrics, including SpO2, Heart Rate, Respiration Rate, and Epidermal Melanin Concentration.
+
