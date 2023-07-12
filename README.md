@@ -3,7 +3,7 @@
 
 *Please see [fastplotlib](https://github.com/kushalkolar/fastplotlib/tree/master), developed by Kushal Kolar, to learn more about the plotting library we primarily use.*
 
-https://github.com/BailabUNC/MABOS/assets/96029511/771f7247-9b72-4f8e-8d22-530e1117df6f
+https://github.com/BailabUNC/MABOS/assets/96029511/9fd53396-fe4b-4406-bf57-0ea401b501d3
 
 There are three key folders in this repository: full_design, firmware, and application.
 
