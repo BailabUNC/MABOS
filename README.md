@@ -13,7 +13,8 @@ This folder contains the *CAD* files (.sch and .brd) detailing schematic and lay
 There is also a folder *Fab_Outputs* that contains the fabrication files necessary for laser cutting the top and bottom side of the board. *_autocad.dxf* files contain the file compatible with our laser cutter. Refer to *protocols/PCB_protocols.pdf* to follow our fabrication process.
 
 Below is the schematic for our LED and Photodiode drivers; The 5-stage analog signal processing pipeline and led drivers are detailed in the schematic.
-[embed]https://github.com/BailabUNC/MABOS/blob/master/protocols/MABOS%20Schematic.pdf[/embed]
+![MABOS Schematic](https://github.com/BailabUNC/MABOS/assets/96029511/2681ffe2-fd34-4c9b-8cab-0c1aee78ead5)
+
 
 ## Firmware
 There are 3 directories in this folder: Arduino, Python, and zephyr_workspace.
