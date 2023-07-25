@@ -2,7 +2,7 @@
 #include <Adafruit_TinyUSB.h> // for Serial
 
 // Pin values for led/pd
-#define red_led 9
+#define red_led 7
 #define ir_led 12
 #define violet_led 10
 #define red_adc A4
@@ -127,7 +127,6 @@ void loop() {
     Serial.println(channel_data[red]);
     Serial.println(channel_data[ir]);
     Serial.println(channel_data[violet]);
-    Serial.println('/');
     Serial.flush();
 
 
